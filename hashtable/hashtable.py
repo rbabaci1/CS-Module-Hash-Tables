@@ -22,7 +22,7 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        self.capacity = capacity
+        self.table = [None] * capacity
 
     def get_num_slots(self):
         """
@@ -34,7 +34,7 @@ class HashTable:
 
         Implement this.
         """
-        pass
+        return len(self.table)
 
     def get_load_factor(self):
         """
@@ -57,7 +57,7 @@ class HashTable:
         for char in key:
             hash *= FNV_prime
             hash ^= ord(char)
-        return hash % self.capacity
+        return hash
 
     def djb2(self, key):
         """
@@ -65,7 +65,10 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
+        hash = 5381
+        for char in key:
+            hash = ((hash << 5) + hash) + ord(char)
+        return hash & 0xFFFFFFFF
 
     def hash_index(self, key):
         """
