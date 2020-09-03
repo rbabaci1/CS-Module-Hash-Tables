@@ -23,6 +23,7 @@ class HashTable:
 
     def __init__(self, capacity):
         self.table = [None] * capacity
+        self.capacity = capacity
 
     def get_num_slots(self):
         """
@@ -43,6 +44,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        pass
 
     def fnv1(self, key):
         """
@@ -86,7 +88,8 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        hash_index = self.hash_index(key)
+        self.table[hash_index] = value
 
     def delete(self, key):
         """
@@ -96,7 +99,11 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        hash_index = self.hash_index(key)
+        if self.table[hash_index]:
+            self.table[hash_index] = None
+        else:
+            print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
 
     def get(self, key):
         """
@@ -106,7 +113,8 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        hash_index = self.hash_index(key)
+        return self.table[hash_index]
 
     def resize(self, new_capacity):
         """
