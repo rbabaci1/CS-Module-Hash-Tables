@@ -99,9 +99,9 @@ class HashTable:
             if not current.next:
                 current.next = entry
             else:
-                while current:
+                while current.next:
                     current = current.next
-                    current.next = entry
+                current.next = entry
         else:
             self.table[hash_index] = entry
             self.occupiedSlots += 1
@@ -115,12 +115,17 @@ class HashTable:
         Implement this.
         """
         hash_index = self.hash_index(key)
-        print(hash_index)
+
         if self.table[hash_index]:
-            self.table[hash_index] = None
-            self.occupiedSlots -= 1
-        else:
-            print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
+            current = self.table[hash_index]
+            while current.key != key and current:
+                current = current.next
+            if current.key == key:
+                self.table[hash_index] = None
+                self.occupiedSlots -= 1
+                return
+
+        print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
 
     def get(self, key):
         """
@@ -148,9 +153,14 @@ ht = HashTable(8)
 
 ht.put("line_1", "l_1")
 ht.put("lin1_e", "l_2")
+ht.put("l1ni_e", "l_3")
 # ht.put("line_3", "l_3")
 # print(ht.table[5].next)
-print(ht.table[5].next.next)
+# print(ht.table[5].value)
+print(ht.table[5].value)
+print(ht.table[5].next.value)
+print(ht.table[5].next.next.value)
+
 
 print()
 
