@@ -9,56 +9,6 @@ class HashTableEntry:
         self.next = None
 
 
-class LinkedList:
-    def __init__(self):
-        self.head = None
-
-    def __repr__(self):
-        str_ = ""
-        current = self.head
-        while current:
-            str_ += f"({current.key}: {current.value}) -> "
-            current = current.next
-        return str_ + "N"
-
-    def insert_head(self, head):
-        self.head = head
-        return 1
-
-    def add_to_tail(self, node):
-        current = self.head
-        while current.next and node.key != current.key:
-            current = current.next
-        if node.key == current.key:
-            current.value = node.value
-            return 0
-        current.next = node
-        return 1
-
-    def delete(self, key):
-        current = self.head
-        if current.key == key:
-            self.head = current.next
-            return current
-        else:
-            prev = current
-            current = current.next
-
-            while current:
-                if current.key == key:
-                    prev.next = current.next
-                    return current
-                prev = current
-                current = current.next
-
-    def get(self, key):
-        current = self.head
-        while current:
-            if current.key == key:
-                return current.value
-            current = current.next
-
-
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
 
@@ -81,8 +31,15 @@ class HashTable:
     def __repr__(self):
         print()
         for l in self.table:
-            print(l)
-        return "*** Done ***"
+            if l:
+                current = l
+                str_ = ""
+                while current:
+                    print(f"({current.key}: {current.value}) -> ")
+                    current = current.next
+            else:
+                print("(Empty)")
+        return ""
 
     def get_num_slots(self):
         """
@@ -222,8 +179,10 @@ class HashTable:
 
 ht = HashTable(8)
 
-# ht.put("line_1", "Rabah")
-# ht.put("line_10", "Kyla")
+ht.put("line_1", "Rabah")
+ht.put("line_10", "Kyla")
+
+print(ht)
 
 # print(ht.occupiedSlots)
 # print(ht.table[5].value)
