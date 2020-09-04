@@ -22,8 +22,11 @@ class HashTable:
     """
 
     def __init__(self, capacity):
+        if capacity < MIN_CAPACITY:
+            capacity = 8
         self.table = [None] * capacity
         self.capacity = capacity
+        self.occupiedSlots = 0
 
     def get_num_slots(self):
         """
@@ -89,7 +92,19 @@ class HashTable:
         Implement this.
         """
         hash_index = self.hash_index(key)
-        self.table[hash_index] = value
+        entry = HashTableEntry(key, value)
+
+        if self.table[hash_index]:
+            current = self.table[hash_index]
+            if not current.next:
+                current.next = entry
+            else:
+                while current:
+                    current = current.next
+                    current.next = entry
+        else:
+            self.table[hash_index] = entry
+            self.occupiedSlots += 1
 
     def delete(self, key):
         """
@@ -100,8 +115,10 @@ class HashTable:
         Implement this.
         """
         hash_index = self.hash_index(key)
+        print(hash_index)
         if self.table[hash_index]:
             self.table[hash_index] = None
+            self.occupiedSlots -= 1
         else:
             print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
 
@@ -124,39 +141,51 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        pass
 
 
-if __name__ == "__main__":
-    ht = HashTable(8)
+ht = HashTable(8)
 
-    ht.put("line_1", "'Twas brillig, and the slithy toves")
-    ht.put("line_2", "Did gyre and gimble in the wabe:")
-    ht.put("line_3", "All mimsy were the borogoves,")
-    ht.put("line_4", "And the mome raths outgrabe.")
-    ht.put("line_5", '"Beware the Jabberwock, my son!')
-    ht.put("line_6", "The jaws that bite, the claws that catch!")
-    ht.put("line_7", "Beware the Jubjub bird, and shun")
-    ht.put("line_8", 'The frumious Bandersnatch!"')
-    ht.put("line_9", "He took his vorpal sword in hand;")
-    ht.put("line_10", "Long time the manxome foe he sought--")
-    ht.put("line_11", "So rested he by the Tumtum tree")
-    ht.put("line_12", "And stood awhile in thought.")
+ht.put("line_1", "l_1")
+ht.put("lin1_e", "l_2")
+# ht.put("line_3", "l_3")
+# print(ht.table[5].next)
+print(ht.table[5].next.next)
 
-    print("")
+print()
 
-    # Test storing beyond capacity
-    for i in range(1, 13):
-        print(ht.get(f"line_{i}"))
 
-    # Test resizing
-    old_capacity = ht.get_num_slots()
-    ht.resize(ht.capacity * 2)
-    new_capacity = ht.get_num_slots()
+# if __name__ == "__main__":
+#     ht = HashTable(8)
 
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+# ht.put("line_1", "'Twas brillig, and the slithy toves")
+# ht.put("line_2", "Did gyre and gimble in the wabe:")
+# ht.put("line_3", "All mimsy were the borogoves,")
+# ht.put("line_4", "And the mome raths outgrabe.")
+# ht.put("line_5", '"Beware the Jabberwock, my son!')
+# ht.put("line_6", "The jaws that bite, the claws that catch!")
+# ht.put("line_7", "Beware the Jubjub bird, and shun")
+# ht.put("line_8", 'The frumious Bandersnatch!"')
+# ht.put("line_9", "He took his vorpal sword in hand;")
+# ht.put("line_10", "Long time the manxome foe he sought--")
+# ht.put("line_11", "So rested he by the Tumtum tree")
+# ht.put("line_12", "And stood awhile in thought.")
 
-    # Test if data intact after resizing
-    for i in range(1, 13):
-        print(ht.get(f"line_{i}"))
+# print("")
 
-    print("")
+# # Test storing beyond capacity
+# for i in range(1, 13):
+#     print(ht.get(f"line_{i}"))
+
+# # Test resizing
+# old_capacity = ht.get_num_slots()
+# ht.resize(ht.capacity * 2)
+# new_capacity = ht.get_num_slots()
+
+# print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+
+# # Test if data intact after resizing
+# for i in range(1, 13):
+#     print(ht.get(f"line_{i}"))
+
+# print("")
