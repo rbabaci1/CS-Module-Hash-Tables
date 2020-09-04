@@ -13,17 +13,26 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
+    def __repr__(self):
+        str_ = ""
+        current = self.head
+        while current:
+            str_ += f"|{current.key}: {current.value}| -> "
+            current = current.next
+        return str_ + "N"
+
+    def insert_head(self, head):
+        self.head = head
+        return 1
+
     def add_to_tail(self, node):
-        if not self.head:
-            self.head = node
-        else:
-            current = self.head
-            while current.next and node.key != current.key:
-                current = current.next
-            if node.key == current.key:
-                current.value = node.value
-                return 0
-            current.next = node
+        current = self.head
+        while current.next and node.key != current.key:
+            current = current.next
+        if node.key == current.key:
+            current.value = node.value
+            return 0
+        current.next = node
         return 1
 
     def delete(self, key):
@@ -41,6 +50,13 @@ class LinkedList:
                     return current
                 prev = current
                 current = current.next
+
+    def get(self, key):
+        current = self.head
+        while current:
+            if current.key == key:
+                return current
+            current = current.next
 
 
 # Hash table can't have fewer than this many slots
@@ -61,6 +77,11 @@ class HashTable:
         self.table = [None] * capacity
         self.capacity = capacity
         self.occupiedSlots = 0
+
+    def __str__(self):
+        for l in self.table:
+            print(l)
+        return "*** Done ***"
 
     def get_num_slots(self):
         """
@@ -132,7 +153,7 @@ class HashTable:
             self.occupiedSlots += self.table[hash_index].add_to_tail(entry)
         else:
             self.table[hash_index] = LinkedList()
-            self.occupiedSlots += self.table[hash_index].add_to_tail(entry)
+            self.occupiedSlots += self.table[hash_index].insert_head(entry)
 
     def delete(self, key):
         """
@@ -159,7 +180,8 @@ class HashTable:
         Implement this.
         """
         hash_index = self.hash_index(key)
-        return self.table[hash_index]
+        if self.table[hash_index]:
+            return self.table[hash_index].get(key).value
 
     def resize(self, new_capacity):
         """
@@ -174,13 +196,20 @@ class HashTable:
 
 ht = HashTable(8)
 
-ht.put("line_1", "Rabah")
-ht.put("line_10", "Kyla")
+# ht.put("line_1", "Rabah")
+# ht.put("line_10", "Kyla")
+
+# print(ht.occupiedSlots)
+# print(ht.table[5].head.value)
+
+# print(ht.delete("line_1"))
 
 # print(ht.table[5].head.value)
-print(ht.delete("line_1"))
+# print(ht.occupiedSlots)
 
-print(ht.occupiedSlots)
+# print(ht.get("line_10").value)
+
+# print(ht.occupiedSlots)
 
 # ht.put("line_1", "l_1")
 # ht.put("lin1_e", "l_2")
