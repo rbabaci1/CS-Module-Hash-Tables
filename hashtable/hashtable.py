@@ -149,12 +149,19 @@ class HashTable:
         """
         hash_index = self.hash_index(key)
         entry = HashTableEntry(key, value)
+        current = self.table[hash_index]
 
-        if self.table[hash_index]:
-            self.occupiedSlots += self.table[hash_index].add_to_tail(entry)
+        if current:
+            while current.next and current.key != key:
+                current = current.next
+            if current.key == key:
+                current.value = value
+                return
+            current.next = entry
+            self.occupiedSlots += 1
         else:
-            self.table[hash_index] = LinkedList()
-            self.occupiedSlots += self.table[hash_index].insert_head(entry)
+            self.table[hash_index] = entry
+            self.occupiedSlots += 1
 
     def delete(self, key):
         """
@@ -165,12 +172,26 @@ class HashTable:
         Implement this.
         """
         hash_index = self.hash_index(key)
-        if self.table[hash_index]:
-            deleted = self.table[hash_index].delete(key)
-            if deleted:
+        current = self.table[hash_index]
+
+        if current:
+            if current.key == key:
+                self.table[hash_index] = current.next
                 self.occupiedSlots -= 1
-        else:
-            print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
+                return current
+            else:
+                prev = current
+                current = current.next
+
+                while current:
+                    if current.key == key:
+                        prev.next = current.next
+                        self.occupiedSlots -= 1
+                        return current
+                    prev = current
+                    current = current.next
+
+        print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
 
     def get(self, key):
         """
@@ -182,7 +203,11 @@ class HashTable:
         """
         hash_index = self.hash_index(key)
         if self.table[hash_index]:
-            return self.table[hash_index].get(key)
+            current = self.table[hash_index]
+            while current:
+                if current.key == key:
+                    return current.value
+                current = current.next
 
     def resize(self, new_capacity):
         """
@@ -201,16 +226,14 @@ ht = HashTable(8)
 # ht.put("line_10", "Kyla")
 
 # print(ht.occupiedSlots)
-# print(ht.table[5].head.value)
+# print(ht.table[5].value)
 
-# print(ht.delete("line_1"))
+# ht.delete("line_1")
 
-# print(ht.table[5].head.value)
+# print(ht.table[5].value)
 # print(ht.occupiedSlots)
 
-# print(ht.get("line_10").value)
-
-# print(ht.occupiedSlots)
+# print(ht.get("line_10"))
 
 # ht.put("line_1", "l_1")
 # ht.put("lin1_e", "l_2")
