@@ -17,7 +17,7 @@ class LinkedList:
         str_ = ""
         current = self.head
         while current:
-            str_ += f"|{current.key}: {current.value}| -> "
+            str_ += f"({current.key}: {current.value}) -> "
             current = current.next
         return str_ + "N"
 
@@ -55,7 +55,7 @@ class LinkedList:
         current = self.head
         while current:
             if current.key == key:
-                return current
+                return current.value
             current = current.next
 
 
@@ -78,7 +78,8 @@ class HashTable:
         self.capacity = capacity
         self.occupiedSlots = 0
 
-    def __str__(self):
+    def __repr__(self):
+        print()
         for l in self.table:
             print(l)
         return "*** Done ***"
@@ -181,7 +182,7 @@ class HashTable:
         """
         hash_index = self.hash_index(key)
         if self.table[hash_index]:
-            return self.table[hash_index].get(key).value
+            return self.table[hash_index].get(key)
 
     def resize(self, new_capacity):
         """
@@ -220,7 +221,7 @@ ht = HashTable(8)
 # ht.delete("line_1")
 # print(ht.table[5].head.value)
 
-print()
+# print()
 
 
 # if __name__ == "__main__":
