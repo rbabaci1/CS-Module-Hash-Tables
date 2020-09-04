@@ -9,6 +9,24 @@ class HashTableEntry:
         self.next = None
 
 
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def add_to_tail(self, node):
+        if not self.head:
+            self.head = node
+        else:
+            current = self.head
+            while current.next and node.key != current.key:
+                current = current.next
+            if node.key == current.key:
+                current.value = node.value
+                return 0
+            current.next = node
+        return 1
+
+
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
 
@@ -95,16 +113,10 @@ class HashTable:
         entry = HashTableEntry(key, value)
 
         if self.table[hash_index]:
-            current = self.table[hash_index]
-            if not current.next:
-                current.next = entry
-            else:
-                while current.next:
-                    current = current.next
-                current.next = entry
+            self.occupiedSlots += self.table[hash_index].add_to_tail(entry)
         else:
-            self.table[hash_index] = entry
-            self.occupiedSlots += 1
+            self.table[hash_index] = LinkedList()
+            self.occupiedSlots += self.table[hash_index].add_to_tail(entry)
 
     def delete(self, key):
         """
@@ -117,14 +129,18 @@ class HashTable:
         hash_index = self.hash_index(key)
 
         if self.table[hash_index]:
-            current = self.table[hash_index]
-            while current.key != key and current:
-                current = current.next
-            if current.key == key:
+            if self.table[hash_index].key == key:
                 self.table[hash_index] = None
                 self.occupiedSlots -= 1
-                return
-
+                # re-arrange if there's more node down the chain
+            else:
+                current = self.table[hash_index]
+                while current.key != key and current.next:
+                    current = current.next
+                if current.key == key:
+                    self.table[hash_index] = None
+                # re-arrange if there's more node down and up the chain
+            return
         print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
 
     def get(self, key):
@@ -151,16 +167,17 @@ class HashTable:
 
 ht = HashTable(8)
 
-ht.put("line_1", "l_1")
-ht.put("lin1_e", "l_2")
-ht.put("l1ni_e", "l_3")
+ht.put("line_1", "Rabah")
+ht.put("line_1", "Kyla")
+
+# ht.put("line_1", "l_1")
+# ht.put("lin1_e", "l_2")
+# ht.put("l1ni_e", "l_3")
 # ht.put("line_3", "l_3")
 # print(ht.table[5].next)
 # print(ht.table[5].value)
-print(ht.table[5].value)
-print(ht.table[5].next.value)
-print(ht.table[5].next.next.value)
-
+# ht.delete("line_1")
+print(ht.table[5].head.value)
 
 print()
 
