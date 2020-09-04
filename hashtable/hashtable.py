@@ -26,6 +26,22 @@ class LinkedList:
             current.next = node
         return 1
 
+    def delete(self, key):
+        current = self.head
+        if current.key == key:
+            self.head = current.next
+            return current
+        else:
+            prev = current
+            current = current.next
+
+            while current:
+                if current.key == key:
+                    prev.next = current.next
+                    return current
+                prev = current
+                current = current.next
+
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
@@ -127,21 +143,12 @@ class HashTable:
         Implement this.
         """
         hash_index = self.hash_index(key)
-
         if self.table[hash_index]:
-            if self.table[hash_index].key == key:
-                self.table[hash_index] = None
+            deleted = self.table[hash_index].delete(key)
+            if deleted:
                 self.occupiedSlots -= 1
-                # re-arrange if there's more node down the chain
-            else:
-                current = self.table[hash_index]
-                while current.key != key and current.next:
-                    current = current.next
-                if current.key == key:
-                    self.table[hash_index] = None
-                # re-arrange if there's more node down and up the chain
-            return
-        print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
+        else:
+            print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
 
     def get(self, key):
         """
@@ -168,7 +175,12 @@ class HashTable:
 ht = HashTable(8)
 
 ht.put("line_1", "Rabah")
-ht.put("line_1", "Kyla")
+ht.put("line_10", "Kyla")
+
+# print(ht.table[5].head.value)
+print(ht.delete("line_1"))
+
+print(ht.occupiedSlots)
 
 # ht.put("line_1", "l_1")
 # ht.put("lin1_e", "l_2")
@@ -177,7 +189,7 @@ ht.put("line_1", "Kyla")
 # print(ht.table[5].next)
 # print(ht.table[5].value)
 # ht.delete("line_1")
-print(ht.table[5].head.value)
+# print(ht.table[5].head.value)
 
 print()
 
