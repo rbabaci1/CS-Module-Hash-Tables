@@ -152,10 +152,11 @@ class HashTable:
 
             if self.get_load_factor() < 0.2 and self.get_num_slots() > MIN_CAPACITY:
                 self.resize(self.capacity // 2)
+
             if current:
                 return current
 
-        print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***")
+        print("\n*** WARNING!!! SPECIFIED VALUE DOES NOT EXISTS ***\n")
 
     def get(self, key):
         """
