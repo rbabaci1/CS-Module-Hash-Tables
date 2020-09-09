@@ -1,10 +1,10 @@
 def no_dups(s):
-    res = []
+    res = {}
     for w in s.split():
         if w not in res:
-            res.append(w)
+            res[w] = 1
 
-    return " ".join(res)
+    return " ".join(res.keys())
 
 
 if __name__ == "__main__":
