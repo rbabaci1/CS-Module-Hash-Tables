@@ -1,21 +1,16 @@
-import re
-
-
 def word_count(s):
     separators = '":;,.-+=/\|[]{}()*^&'
-
-    for c in separators:
-        s = s.replace(c, "")
-
     words = s.split()
     res = {}
 
     for word in words:
-        word = word.lower()
-        if word not in res:
-            res[word] = 1
-        else:
+        word = word.strip(separators).lower()
+        if not word:
+            break
+        if word in res:
             res[word] += 1
+        else:
+            res[word] = 1
     return res
 
 
