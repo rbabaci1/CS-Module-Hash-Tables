@@ -4,7 +4,6 @@ from hashtable import HashTable
 
 
 class TestHashTable(unittest.TestCase):
-
     def test_hash_table_insertion_and_retrieval(self):
         ht = HashTable(8)
 
@@ -21,6 +20,7 @@ class TestHashTable(unittest.TestCase):
 
         return_value = ht.get("key-0")
         self.assertTrue(return_value == "val-0")
+
         return_value = ht.get("key-1")
         self.assertTrue(return_value == "val-1")
         return_value = ht.get("key-2")
@@ -67,6 +67,7 @@ class TestHashTable(unittest.TestCase):
 
         return_value = ht.get("key-0")
         self.assertTrue(return_value == "new-val-0")
+
         return_value = ht.get("key-1")
         self.assertTrue(return_value == "new-val-1")
         return_value = ht.get("key-2")
@@ -159,5 +160,6 @@ class TestHashTable(unittest.TestCase):
         return_value = ht.get("key-9")
         self.assertTrue(return_value is None)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
