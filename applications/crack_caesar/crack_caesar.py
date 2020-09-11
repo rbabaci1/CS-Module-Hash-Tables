@@ -34,7 +34,6 @@ letters_frequency = {
 def get_closest_value(set1, set2, val):
     diff_1 = abs(set1[1] - val)
     diff_2 = abs(set2[1] - val)
-
     return set2[0] if diff_2 < diff_1 else set1[0]
 
 
@@ -64,13 +63,13 @@ def get_letter(freq):
             end = mid - 1
 
 
-print(get_letter(21))
-
-
 def crack_caesar_sipher(file_name):
     with open(file_name) as f:
         words = f.read()
     words = words.split()
+
+    # TODO calculate the frequency of every ciphertext characters
+    # TODO and run them through the get letter function to get character it maps to.
 
 
 # crack_caesar_sipher("ciphertext.txt")
