@@ -25,7 +25,7 @@ for i in range(len(words) - 1):
 
 def generateText(max_sentences=5):
     word = random.choice(list(dictionary))
-    print(word.capitalize(), end=" ")
+    print(f"\n{word.capitalize()}", end=" ")
     quote, new_line, num_sentences = "", False, 0
 
     for _ in dictionary:
