@@ -2,8 +2,11 @@ import random
 import sys
 
 # Read in all the words in one go
-with open("input.txt") as f:
+with open(
+    "/Users/rab22/Lambda_School/CS/Unit_2/CS-Module-Hash-Tables/applications/markov/input.txt"
+) as f:
     words = f.read()
+
 
 # TODO: analyze which words can follow other words
 words = words.split()
@@ -20,18 +23,33 @@ for i in range(len(words) - 1):
 # TODO: construct 5 random sentences
 
 
-def generateText():
+def generateText(max_sentences=5):
     word = random.choice(list(dictionary))
     print(word.capitalize(), end=" ")
+    quote, new_line, num_sentences = "", False, 0
 
-    for w in dictionary:
+    for _ in dictionary:
         word = random.choice(dictionary[word])
-        print(word, end=" ")
-        if word.endswith((".", "!", "?")):
-            break
+        w = word
+        if new_line:
+            w = word.capitalize()
+        new_line = False
 
-    # sys.stdout.write("\b.\n")
+        if w.startswith(('"', "'")):
+            quote += w[0]
+
+        if w.endswith((".", "!", "?", '."', '!"', '?"')):
+            if not w.endswith(quote):
+                w += quote
+            num_sentences += 1
+            new_line, quote = True, ""
+
+            print(f"{w}\n")
+            if num_sentences == max_sentences:
+                break
+        else:
+            print(w, end=" ")
 
 
-generateText()
+generateText(3)
 
