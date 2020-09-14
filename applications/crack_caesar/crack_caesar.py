@@ -1,6 +1,3 @@
-# Use frequency analysis to find the key to ciphertext.txt, and then
-# decode it.
-
 letters_frequencies = [
     "E",
     "T",
@@ -30,10 +27,8 @@ letters_frequencies = [
     "Z",
 ]
 
-letters_map = {}
 
-
-def count_occurrences(characters):
+def create_map(characters):
     result = {}
     for c in characters:
         if c.isalpha():
@@ -41,7 +36,11 @@ def count_occurrences(characters):
                 result[c] += 1
             else:
                 result[c] = 1
-    return sorted(result.items(), key=lambda x: x[1], reverse=True)
+
+    result = dict(sorted(result.items(), key=lambda x: x[1], reverse=True))
+    for i, c in enumerate(result):
+        result[c] = letters_frequencies[i]
+    return result
 
 
 def crack_caesar_sipher(file_name):
@@ -49,10 +48,7 @@ def crack_caesar_sipher(file_name):
         words = f.read()
 
     characters = list(words)
-    letters_occurrences = count_occurrences(characters)
-
-    for i, s in enumerate(letters_occurrences):
-        letters_map[s[0]] = letters_frequencies[i]
+    letters_map = create_map(characters)
 
     for i, c in enumerate(characters):
         if c.isalpha():
